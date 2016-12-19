@@ -1,0 +1,72 @@
+
+//ext {
+//    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
+//    bintrayName = 'geetest'//bintray上的项目名
+//
+//    publishedGroupId = 'geetest'//JCenter的GroupId
+//    artifact = 'geetest'//JCenter的ArtifactId
+//
+//    siteUrl = 'https://github.com/GeeTeam/gtapp-android'
+//    gitUrl = 'https://github.com/GeeTeam/gtapp-android'
+//
+//    libraryVersion = '1.0.0'//版本号
+//    libraryName = 'geetest'//项目名字，没什么用
+//    libraryDescription = 'A tool for Android'//项目描述，没什么用
+//
+//    //开发者信息
+//    developerId = 'guxiaonian'
+//    developerName = 'guxiaonian'
+//    developerEmail = 'gunaonian@geetest.com'
+//
+//    //以上所有信息自行修改，以下不变
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+
+
+
+
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.guxiaonian'
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 14
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+}
+
+task makeJar(type: Copy) {
+    delete 'build/libs/libgtsdk.jar'
+    from('build/intermediates/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', 'libgtsdk.jar')
+}
+
+makeJar.dependsOn(build)
